@@ -1,5 +1,5 @@
 import streamlit as st
-from firebase_utils.firebase_utils import get_all_patients
+from firebase_utils.firebase_utils import get_all_patients, update_patient
 
 st.title("Edit Patient")
 
@@ -25,6 +25,21 @@ ENTRY_TYPES = {
         'relation': "Family Relation",
         'condition': 'Condition',
         "age_at_diagnosis": "Age at Diagnosis"
+    },
+    "Condition": {
+        "condition": "Condition Name",
+        "diagnosis_date": "Diagnosis Date (MM-DD-YYY)",
+        "active": "Active? (Y/N)"
+    },
+    "Vital Sign": {
+        "name": "Name",
+        "value": "Value",
+        "date": "Date (MM-DD-YYYY)"
+    },
+    "Lab Value": {
+        "name": "Name",
+        "value": "Value",
+        "date": "Date (MM-DD-YYYY)"
     }
 }
 
@@ -57,3 +72,6 @@ if patient_id in patients:
                 entry_obj[key] = st.session_state[key]
 
             st.write(entry_obj)
+            update_patient(patient_id, entry_option, entry_obj)
+
+    st.write(patients[patient_id])

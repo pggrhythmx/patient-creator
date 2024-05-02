@@ -28,9 +28,21 @@ if not firebase_admin._apps:
 ref = db.reference("/patient-data")
 
 def write_to_fb(obj):
-    ref.push().set(obj)
+  ref.push().set(obj)
     
 def get_all_patients():
+    ref = db.reference("/patient-data")
+    patient_records = ref.get()
+    return patient_records
+
+def update_patient(patient_id, key, new_value):
 	ref = db.reference("/patient-data")
 	patient_records = ref.get()
-	return patient_records
+	for id, patient in patient_records.items():
+		if id == patient_id:
+			if key not in patient:
+				patient[key] = []
+			patient[key].append(new_value)
+			ref.child(id).set(patient)
+			
+	
